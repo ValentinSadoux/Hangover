@@ -2,6 +2,7 @@
 #pragma once
 #include "GameFramework/GameModeBase.h"
 #include "MainUserWidget.h"
+#include "PauseWidget.h"
 #include "ProjectNoNameCharacter.h"
 #include "ProjectNoNameGameMode.generated.h"
 
@@ -19,11 +20,19 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
     TSubclassOf<class UUserWidget> PlayerHUDClass;
     
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+    TSubclassOf<class UUserWidget> PauseHUDClass;
+    
     UPROPERTY()
     class UMainUserWidget* CurrentWidget;
     
     UPROPERTY()
     AProjectNoNameCharacter* CurrentCharacter;
+    
+    void ShowPause();
+    
+private:
+    UPauseWidget* _pauseMenu;
 };
 
 

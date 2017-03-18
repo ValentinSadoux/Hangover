@@ -3,10 +3,12 @@
 #include "ProjectNoName.h"
 #include "ProjectNoNameCharacter.h"
 #include "ProjectNoNameProjectile.h"
+#include "ProjectNoNameGameMode.h"
 #include "Animation/AnimInstance.h"
 #include "GameFramework/InputSettings.h"
 #include "Kismet/HeadMountedDisplayFunctionLibrary.h"
 #include "MotionControllerComponent.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -126,6 +128,8 @@ void AProjectNoNameCharacter::SetupPlayerInputComponent(class UInputComponent* P
     // set up gameplay key bindings
     check(PlayerInputComponent);
     
+    PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AProjectNoNameCharacter::ShowPause);
+    
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
     PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
     
@@ -147,6 +151,15 @@ void AProjectNoNameCharacter::SetupPlayerInputComponent(class UInputComponent* P
     PlayerInputComponent->BindAxis("TurnRate", this, &AProjectNoNameCharacter::TurnAtRate);
     PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
     PlayerInputComponent->BindAxis("LookUpRate", this, &AProjectNoNameCharacter::LookUpAtRate);
+}
+
+void AProjectNoNameCharacter::ShowPause() {
+    AProjectNoNameGameMode* gameMode = (AProjectNoNameGameMode*) GetWorld()->GetAuthGameMode();
+    if (gameMode != nullptr) {
+        gameMode->ShowPause();
+    } else {
+        UE_LOG(LogTemp, Warning, TEXT("AProjectNoNameCharacter::ShowPause -> FAIL CAST"));
+    }
 }
 
 void AProjectNoNameCharacter::OnFire()

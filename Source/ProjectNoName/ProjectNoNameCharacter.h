@@ -1,6 +1,7 @@
 
 #pragma once
 #include "GameFramework/Character.h"
+#include "PauseWidget.h"
 #include "ProjectNoNameCharacter.generated.h"
 
 class UInputComponent;
@@ -77,6 +78,8 @@ public:
     uint32 bUsingMotionControllers : 1;
     
 protected:
+    
+    void ShowPause();
     
     /** Fires a projectile. */
     void OnFire();

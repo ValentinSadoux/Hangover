@@ -16,6 +16,8 @@ AProjectNoNameGameMode::AProjectNoNameGameMode()
 	HUDClass = AProjectNoNameHUD::StaticClass();
     
     PrimaryActorTick.bCanEverTick = true;
+    
+    
 }
 
 void AProjectNoNameGameMode::BeginPlay() {
@@ -33,6 +35,26 @@ void AProjectNoNameGameMode::BeginPlay() {
         } else {
             UE_LOG(LogTemp, Warning, TEXT("this->CurrentWidget->Init(); -----> FAIL"));
         }
+    }
+}
+
+void AProjectNoNameGameMode::ShowPause() {
+    if (this->PauseHUDClass != nullptr) {
+        UGameplayStatics::SetGamePaused(GetWorld(), true);
+        auto pauseMenu = CreateWidget<UPauseWidget>(GetWorld(), this->PauseHUDClass);
+        if (pauseMenu != nullptr) {
+            pauseMenu->Init();
+            pauseMenu->AddToViewport();
+            
+            APlayerController* MyController = GetWorld()->GetFirstPlayerController();
+            MyController->bShowMouseCursor = true;
+            
+            UE_LOG(LogTemp, Warning, TEXT("draw pause HUD"));
+        } else {
+            UE_LOG(LogTemp, Warning, TEXT("WARNING: can't draw pause HUD"));
+        }
+    } else {
+        UE_LOG(LogTemp, Warning, TEXT("draw pause HUD: this->PauseHUDClass == nullptr"));
     }
 }
 
